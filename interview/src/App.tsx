@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Dashboard from './Components/dashboard';
 import { DashboardData } from './Components/dashboard';
-import './App.css';
+// import './App.css';
 
 const App: React.FC = () => {
     const [data, setData] = useState<DashboardData | null>(null);

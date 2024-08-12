@@ -54,9 +54,9 @@ const RegionCard: React.FC<RegionCardProps> = ({ title, data }) => {
 
     return (
         <Box sx={{ padding: 2 }}>
-            <Typography variant="h6" gutterBottom>{title} Region Overview</Typography>
-            <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+            <Typography align='center' variant="h6" gutterBottom>{title} Region Overview</Typography>
+            <Grid container spacing={8} justifyContent="center" alignItems="center">
+                <Grid item xs={6} sm={2}>
                     <Typography>Status: {data.status}</Typography>
                     <Typography>
                         Redis: {data.results.services.redis ? <CheckCircleOutlineIcon color="success" /> : <ErrorOutlineIcon color="error" />}
@@ -65,7 +65,7 @@ const RegionCard: React.FC<RegionCardProps> = ({ title, data }) => {
                         Database: {data.results.services.database ? <CheckCircleOutlineIcon color="success" /> : <ErrorOutlineIcon color="error" />}
                     </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={6} sm={2}>
                     <Typography>Servers Count: {data.results.stats.servers_count}</Typography>
                     <Typography>Online Users/Sessions: {data.results.stats.online}</Typography>
                     <Typography>Active Connections: {data.results.stats.server.active_connections}</Typography>
