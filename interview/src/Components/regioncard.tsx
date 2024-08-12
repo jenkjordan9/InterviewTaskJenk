@@ -77,7 +77,7 @@ const RegionCard: React.FC<RegionCardProps> = ({ title, data }) => {
             {/* Four Quadrants for Metrics */}
             <Grid container spacing={2} sx={{ marginTop: 4 }}>
                 <Grid item xs={12} md={6}>
-                    <Box sx={{ height: '100%', padding: 2, border: '1px solid #ddd', borderRadius: 2 }}>
+                    <Box sx={{ height: '100%', padding: 2 }}>
                         <Typography variant="h6" gutterBottom>Active Connections Over Time</Typography>
                         <ResponsiveContainer width="100%" height={200}>
                             <LineChart data={activeConnectionsData}>
@@ -93,7 +93,7 @@ const RegionCard: React.FC<RegionCardProps> = ({ title, data }) => {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <Box sx={{ height: '100%', padding: 2, border: '1px solid #ddd', borderRadius: 2 }}>
+                    <Box sx={{ height: '100%', padding: 2 }}>
                         <Typography variant="h6" gutterBottom>CPU Load Over Time</Typography>
                         <ResponsiveContainer width="100%" height={200}>
                             <LineChart data={cpuLoadData}>
@@ -109,7 +109,7 @@ const RegionCard: React.FC<RegionCardProps> = ({ title, data }) => {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <Box sx={{ height: '100%', padding: 2, border: '1px solid #ddd', borderRadius: 2 }}>
+                    <Box sx={{ height: '100%', padding: 2 }}>
                         <Typography variant="h6" gutterBottom>Worker Utilization</Typography>
                         <ResponsiveContainer width="100%" height={200}>
                             <BarChart data={workerStatesData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -127,7 +127,7 @@ const RegionCard: React.FC<RegionCardProps> = ({ title, data }) => {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <Box sx={{ height: '100%', padding: 2, border: '1px solid #ddd', borderRadius: 2 }}>
+                    <Box sx={{ height: '100%', padding: 2 }}>
                         <Typography variant="h6" gutterBottom>Worker Statistics</Typography>
                         <TableContainer component={Paper}>
                             <Table size="small">
