@@ -4,7 +4,7 @@ import axios from 'axios';
 import rateLimit from 'express-rate-limit';
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 // Initialize WebSocket Server
 const wss = new WebSocketServer({ noServer: true });
