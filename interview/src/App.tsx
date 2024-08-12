@@ -7,7 +7,7 @@ const App: React.FC = () => {
     const [data, setData] = useState<DashboardData | null>(null);
 
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:8080');
+        const socket = new WebSocket(process.env.REACT_APP_WS_URL || 'ws://localhost:8080');
 
         socket.onmessage = (event) => {
             const receivedData = JSON.parse(event.data);
