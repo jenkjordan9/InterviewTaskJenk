@@ -3,7 +3,6 @@ import { Box, IconButton, Typography, Card, CardContent, Grid } from '@mui/mater
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import RegionCard from './regioncard';
 
-// Define the shape of the data you'll be receiving
 export interface WorkerStats {
     wait_time: number;
     workers: number;

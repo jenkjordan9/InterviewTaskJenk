@@ -21,7 +21,6 @@ wss.on('connection', (ws) => {
                 axios.get('https://data--us-west.upscope.io/status?stats=1'),
                 axios.get('https://data--sa-east.upscope.io/status?stats=1'),
                 axios.get('https://data--ap-southeast.upscope.io/status?stats=1'),
-                // Add other endpoint requests here
             ]);
 
             ws.send(JSON.stringify({
@@ -31,7 +30,6 @@ wss.on('connection', (ws) => {
                 usWestData: responses[3].data,
                 saEastData: responses[4].data,
                 apSouthEastData: responses[5].data,
-                // Include data from other endpoints here
             }));
             console.log('Data sent to client');
         } catch (error) {
