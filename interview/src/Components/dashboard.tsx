@@ -3,7 +3,7 @@ import { Box, IconButton, Typography, Card, CardContent } from '@mui/material';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import RegionCard from './regioncard';
 
-export interface WorkerStats {
+interface WorkerStats {
     wait_time: number;
     workers: number;
     waiting: number;
