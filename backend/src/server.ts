@@ -9,49 +9,57 @@ const port = process.env.PORT || 8080;
 // Initialize WebSocket Server
 const wss = new WebSocketServer({ noServer: true });
 
+let LatestData: undefined | Record<string, any> = undefined
+
+const interval = setInterval(async () => {
+    try {
+        const source = axios.CancelToken.source();
+        const timeout = setTimeout(() => {
+            source.cancel();
+        }, 5000); // 5 seconds timeout
+
+        const responses = await Promise.all([
+            axios.get('https://data--us-east.upscope.io/status?stats=1', { cancelToken: source.token }),
+            axios.get('https://data--eu-west.upscope.io/status?stats=1', { cancelToken: source.token }),
+            axios.get('https://data--eu-central.upscope.io/status?stats=1', { cancelToken: source.token }),
+            axios.get('https://data--us-west.upscope.io/status?stats=1', { cancelToken: source.token }),
+            axios.get('https://data--sa-east.upscope.io/status?stats=1', { cancelToken: source.token }),
+            axios.get('https://data--ap-southeast.upscope.io/status?stats=1', { cancelToken: source.token }),
+        ]);
+
+        clearTimeout(timeout);
+
+        const data = {
+            usEastData: responses[0].data || null,
+            euWestData: responses[1].data || null,
+            euCentralData: responses[2].data || null,
+            usWestData: responses[3].data || null,
+            saEastData: responses[4].data || null,
+            apSouthEastData: responses[5].data || null,
+        };
+
+        LatestData = data
+        wss.clients.forEach( (ws) => ws.send(JSON.stringify(LatestData) ))
+        console.log('Data added to array');
+        console.log(LatestData)
+    } catch (error) {
+        if (axios.isCancel(error)) {
+            console.error('Request timed out:', error.message);
+        } else {
+            console.error('Error fetching data:', (error as Error).message);
+        }
+    }
+}, 5000); // Fetch every 5 seconds
+
 wss.on('connection', (ws) => {
     console.log('Client connected');
+
+    if(LatestData!== undefined){
+        ws.send(JSON.stringify(LatestData))
+        console.log('latest data sent')
+    }
     
     // Fetch and send data periodically with error handling
-    const interval = setInterval(async () => {
-        try {
-            const source = axios.CancelToken.source();
-            const timeout = setTimeout(() => {
-                source.cancel();
-            }, 5000); // 5 seconds timeout
-
-            const responses = await Promise.all([
-                axios.get('https://data--us-east.upscope.io/status?stats=1', { cancelToken: source.token }),
-                axios.get('https://data--eu-west.upscope.io/status?stats=1', { cancelToken: source.token }),
-                axios.get('https://data--eu-central.upscope.io/status?stats=1', { cancelToken: source.token }),
-                axios.get('https://data--us-west.upscope.io/status?stats=1', { cancelToken: source.token }),
-                axios.get('https://data--sa-east.upscope.io/status?stats=1', { cancelToken: source.token }),
-                axios.get('https://data--ap-southeast.upscope.io/status?stats=1', { cancelToken: source.token }),
-            ]);
-
-            clearTimeout(timeout);
-
-            const data = {
-                usEastData: responses[0].data || null,
-                euWestData: responses[1].data || null,
-                euCentralData: responses[2].data || null,
-                usWestData: responses[3].data || null,
-                saEastData: responses[4].data || null,
-                apSouthEastData: responses[5].data || null,
-            };
-
-            ws.send(JSON.stringify(data));
-            console.log('Data sent to client');
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                console.error('Request timed out:', error.message);
-                ws.send(JSON.stringify({ error: 'Request timed out' }));
-            } else {
-                console.error('Error fetching data:', (error as Error).message);
-                ws.send(JSON.stringify({ error: 'Failed to fetch data' }));
-            }
-        }
-    }, 5000); // Fetch every 5 seconds
 
     ws.on('close', () => {
         clearInterval(interval);
